@@ -8,9 +8,9 @@ class TreePopUp extends Component {
             <Popup key={hoveredTree.recordid} coordinates={hoveredTree.geometry.coordinates}>
                 <div>
                     <h3>{hoveredTree.fields.libellefrancais}</h3>
-                    <p>Espèce : {hoveredTree.fields.espece}</p>
-                    <p>Genre : {hoveredTree.fields.genre}</p>
-                    {hoveredTree.fields.dateplantation ? (<p> Date de plantation : {hoveredTree.fields.dateplantation} </p>) : null}
+                    <div>Espèce : {hoveredTree.fields.espece}</div>
+                    <div>Genre : {hoveredTree.fields.genre}</div>
+                    {hoveredTree.fields.dateplantation ? (<div> Date de plantation : {hoveredTree.fields.dateplantation} </div>) : null}
                 </div>
             </Popup>
         );

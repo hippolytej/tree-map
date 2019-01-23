@@ -23,43 +23,33 @@ class TreeMap extends Component {
             treeDict: '',
             nbTrees: 0,
             treeIds: [],
-            hoveredTree: '',
+            hoveredTreeID: '',
             mapCenter: [2.3466110229492188, 48.85613168160397],
             zoom: [12]
         };
-        this.onMouseEnter = this.onMouseEnter.bind(this)
-        this.onMouseleave = this.onMouseleave.bind(this)
     }
 
-    onMouseEnter(hoveredTree){
-        this.setState({hoveredTree: hoveredTree});
-    }
-
-    onMouseleave(){
-        this.setState({hoveredTree: ''});
-    }
-
-    onTreeHover = (hoveredTree, { map }) => {
+    onTreeHover = (hoveredTreeID, { map }) => {
         map.getCanvas().style.cursor = 'pointer';
-        // this.props.onMouseEnter(hoveredTree);
+        // this.setState({hoveredTreeID: hoveredTreeID});
     }
 
     onTreeEndHover = ({ map }) => {
         map.getCanvas().style.cursor = '';
-        // this.props.onMouseLeave();
+        // this.setState({hoveredTreeID: ''});
     }
 
-    onTreeClick = (hoveredTree) => {
+    onTreeClick = (hoveredTreeID) => {
         this.setState({
-            hoveredTree: hoveredTree,
-            mapCenter: hoveredTree.geometry.coordinates,
+            hoveredTreeID: hoveredTreeID,
+            mapCenter: this.state.treeDict[hoveredTreeID].geometry.coordinates,
             zoom: [14]
         });
     };
 
     componentWillMount(){
         var ids = [];
-        return fetch('https://opendata.paris.fr/api/records/1.0/search/?dataset=arbresremarquablesparis2011&rows=200')
+        return fetch('https://opendata.paris.fr/api/records/1.0/search/?dataset=arbresremarquablesparis&rows=200')
             .then((response) => response.json())
             .then((responseJson) => {
                 var maxNbTrees = Math.min(responseJson.parameters.rows, responseJson.nhits);
@@ -81,10 +71,9 @@ class TreeMap extends Component {
         });
     }
     render() {
-        const hoveredTree = this.state.hoveredTree;
+        const hoveredTreeID = this.state.hoveredTreeID;
         const mapCenter = this.state.mapCenter;
         const zoom = this.state.zoom;
-        console.log(this.onMouseleaver)
         return (
             <Map
                 style={mapStyle}
@@ -100,9 +89,9 @@ class TreeMap extends Component {
                     treeDict={this.state.treeDict}
                     onTreeClick={this.onTreeClick}
                 />
-                {hoveredTree && (
+                {hoveredTreeID && (
                     <TreePopUp
-                        hoveredTree={hoveredTree}
+                        hoveredTree={this.state.treeDict[hoveredTreeID]}
                     />
                     )}
             </Map>

@@ -9,14 +9,14 @@ class TreeLayer extends Component {
             <Layer
                 type="symbol"
                 id={'trees'}
-                layout={{'icon-image': 'park-15'}}>
+                layout={{'icon-image': 'billy'}}>
                 {
                     treeIds.map(id => (
                         <Feature
-                            onMouseEnter={this.props.onTreeHover.bind(this, treeDict[id])}
+                            onMouseEnter={this.props.onTreeHover.bind(this, id)}
                             onMouseLeave={this.props.onTreeEndHover.bind(this)}
                             coordinates={treeDict[id].geometry.coordinates}
-                            onClick={this.props.onTreeClick.bind(null, treeDict[id])}
+                            onClick={this.props.onTreeClick.bind(null, id)}
                             key={id}
                         />
                     ))
