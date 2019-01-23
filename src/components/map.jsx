@@ -14,8 +14,6 @@ const flyToOptions = {
     speed: 0.6
 };
 
-
-
 class TreeMap extends Component {
     constructor(props){
         super(props);
