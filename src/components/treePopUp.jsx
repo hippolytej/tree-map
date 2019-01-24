@@ -4,11 +4,13 @@ import { Popup } from 'react-mapbox-gl';
 class TreePopUp extends Component {
     render() {
         var hoveredTree = this.props.hoveredTree;
+        var onPopUpClick = this.props.onPopUpClick;
         return (
             <Popup
                 key={hoveredTree.recordid}
                 coordinates={hoveredTree.geometry.coordinates}
                 offset={15}
+                onClick={onPopUpClick}
             >
                 <div>
                     <h3>{hoveredTree.fields.libellefrancais}</h3>

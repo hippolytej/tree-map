@@ -44,6 +44,13 @@ class TreeMap extends Component {
         });
     };
 
+    onPopUpClick = () => {
+        this.setState({
+            hoveredTreeID: '',
+            //mapCenter: this.state.treeDict[hoveredTreeID].geometry.coordinates
+        });
+    }
+
     componentDidMount(){
         this.TreeData();
     }
@@ -89,6 +96,7 @@ class TreeMap extends Component {
                 {hoveredTreeID && (
                     <TreePopUp
                         hoveredTree={this.state.treeDict[hoveredTreeID]}
+                        onPopUpClick={this.onPopUpClick}
                     />
                     )}
             </Map>
