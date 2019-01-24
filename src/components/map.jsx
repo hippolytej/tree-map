@@ -29,45 +29,44 @@ class TreeMap extends Component {
 
     onTreeHover = (hoveredTreeID, { map }) => {
         map.getCanvas().style.cursor = 'pointer';
-        // this.setState({hoveredTreeID: hoveredTreeID});
+        this.setState({hoveredTreeID: hoveredTreeID});
     }
 
     onTreeEndHover = ({ map }) => {
         map.getCanvas().style.cursor = '';
-        // this.setState({hoveredTreeID: ''});
+        this.setState({hoveredTreeID: ''});
     }
 
     onTreeClick = (hoveredTreeID) => {
         this.setState({
             hoveredTreeID: hoveredTreeID,
-            mapCenter: this.state.treeDict[hoveredTreeID].geometry.coordinates,
-            zoom: [14]
+            //mapCenter: this.state.treeDict[hoveredTreeID].geometry.coordinates
         });
     };
 
-    componentWillMount(){
+    componentDidMount(){
+        this.TreeData();
+    }
+
+    TreeData = async () => {
         var ids = [];
-        return fetch('https://opendata.paris.fr/api/records/1.0/search/?dataset=arbresremarquablesparis&rows=200')
-            .then((response) => response.json())
-            .then((responseJson) => {
-                var maxNbTrees = Math.min(responseJson.parameters.rows, responseJson.nhits);
-                for (var i = 0; i < maxNbTrees; i++) {
-                    ids.push(i)
-                }
-                this.setState({
-                    treeDict: responseJson.records,
-                    nbTrees: maxNbTrees,
-                    treeIds: ids
-            }, function(){
-                console.log('dict', this.state.treeDict);
-                console.log('nb', this.state.nbTrees);
-                console.log('ids', this.state.treeIds);
-            });
-        })
-            .catch((error) =>{
-            console.error(error);
+        const response = await fetch('https://opendata.paris.fr/api/records/1.0/search/?dataset=arbresremarquablesparis&rows=200');
+        const responseJson = await response.json();
+        var maxNbTrees = Math.min(responseJson.parameters.rows, responseJson.nhits);
+        for (var i = 0; i < maxNbTrees; i++) {
+            ids.push(i)
+        }
+        return this.setState({
+            treeDict: responseJson.records,
+            nbTrees: maxNbTrees,
+            treeIds: ids
+        }, function(){
+            console.log('dict', this.state.treeDict);
+            console.log('nb', this.state.nbTrees);
+            console.log('ids', this.state.treeIds);
         });
     }
+
     render() {
         const hoveredTreeID = this.state.hoveredTreeID;
         const mapCenter = this.state.mapCenter;
