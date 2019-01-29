@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactMapboxGl from 'react-mapbox-gl';
+import { GeolocateControl } from 'mapbox-gl';
 import TreeLayer from './treeLayer';
 import TreePopUp from './treePopUp';
 import { token, style } from '../config.json';
@@ -26,6 +27,14 @@ class TreeMap extends Component {
             zoom: [12]
         };
     }
+
+    onMapLoad = (map) => {
+        map.addControl(
+            new GeolocateControl({
+                positionOptions: {enableHighAccuracy: true},
+                trackUserLocation: false})
+                );
+      };
 
     onTreeHover = (hoveredTreeID, { map }) => {
         map.getCanvas().style.cursor = 'pointer';
@@ -80,6 +89,7 @@ class TreeMap extends Component {
         const zoom = this.state.zoom;
         return (
             <Map
+                onStyleLoad={this.onMapLoad}
                 style={mapStyle}
                 center={mapCenter}
                 containerStyle={{ width: '100vw', height: '100vh'}}
