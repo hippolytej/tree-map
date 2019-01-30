@@ -4,7 +4,7 @@ import { Popup } from 'react-mapbox-gl';
 class TreePopUp extends Component {
     render() {
         var hoveredTree = this.props.hoveredTree;
-        var onPopUpClick = this.props.onPopUpClick;
+        const onPopUpClick = this.props.onPopUpClick;
         return (
             <Popup
                 key={hoveredTree.recordid}
