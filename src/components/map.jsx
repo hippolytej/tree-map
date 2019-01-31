@@ -29,7 +29,8 @@ class TreeMap extends Component {
             leftDrawer: false,
             bottomDrawer: false,
             wikiTreeData: '',
-            thumbnailUrl : ''
+            thumbnailUrl : '',
+            wikiDesc : ''
         };
         this.toggleDrawer = this.toggleDrawer.bind(this);
     }
@@ -113,18 +114,28 @@ class TreeMap extends Component {
         var bestResultTitle = bestResult.split('/').slice(-1)[0]
         console.log('Best result title', bestResultTitle);
 
+        const descQueryResponse = await fetch(
+            `https://fr.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=${bestResultTitle}&origin=*`);
+        const descQueryJson = await descQueryResponse.json();
+        console.log('descQuery Json', descQueryJson)
+        const descPages = descQueryJson.query.pages;
+        console.log('Pages', descPages)
+        const desc = descPages[Object.keys(descPages)[0]].extract;
+        console.log('desc', desc)
+
         // Then query the best result's page :)
-        const queryResponse = await fetch(
+        const thumbQueryResponse = await fetch(
             `https://fr.wikipedia.org/w/api.php?action=query&prop=pageimages&titles=${bestResultTitle}&format=json&pithumbsize=200&origin=*`);
-        const queryJson = await queryResponse.json();
-        console.log('Query Json', queryJson)
-        const pages = queryJson.query.pages;
-        console.log('Pages', pages)
-        const thumbnail = pages[Object.keys(pages)[0]].thumbnail.source;
+        const thumbQueryJson = await thumbQueryResponse.json();
+        console.log('thumbQuery Json', thumbQueryJson)
+        const thumbPages = thumbQueryJson.query.pages;
+        console.log('Pages', thumbPages)
+        const thumbnail = thumbPages[Object.keys(thumbPages)[0]].thumbnail.source;
         console.log('Thumbnail', thumbnail)
 
         //TODO const description = queryJson;
         return this.setState({
+            wikiDesc: desc,
             thumbnailUrl: thumbnail
         }, function(){
             console.log('wikiData', this.state.thumbnailUrl);
@@ -160,6 +171,7 @@ class TreeMap extends Component {
                         )}
                 </Map>
                 <TemporaryDrawer
+                    wikiDesc={this.state.wikiDesc}
                     thumbnailUrl={this.state.thumbnailUrl}
                     leftDrawer={this.state.leftDrawer}
                     bottomDrawer={this.state.bottomDrawer}

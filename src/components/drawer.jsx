@@ -39,6 +39,7 @@ class TemporaryDrawer extends React.Component {
                         onKeyDown={this.props.toggleDrawer}
                     >
                         <img src={this.props.thumbnailUrl} alt="Thubnail" />
+                        <p>{this.props.wikiDesc}</p>
                     </div>
                 </Drawer>
             </div>
