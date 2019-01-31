@@ -27,8 +27,7 @@ class TreeMap extends Component {
             clickedTreeID: '',
             mapCenter: [2.3466110229492188, 48.85613168160397],
             zoom: [12],
-            leftDrawer: false,
-            bottomDrawer: false,
+            openDrawer: false,
             wikiTreeData: '',
             thumbnailUrl : '',
             wikiDesc : ''
@@ -65,7 +64,7 @@ class TreeMap extends Component {
     onInfoButtonClick = () => {
         console.log('CLICKED');
         this.setState({
-            bottomDrawer: true
+            openDrawer: true
             //mapCenter: this.state.treeDict[hoveredTreeID].geometry.coordinates
         });
         var treeId = this.state.hoveredTreeID ? this.state.hoveredTreeID : this.state.clickedTreeID
@@ -85,7 +84,7 @@ class TreeMap extends Component {
 
     toggleDrawer = () => {
         this.setState({
-            bottomDrawer: false,
+            openDrawer: false,
             thumbnailUrl: '',
             wikiDesc: ''
         });
@@ -205,7 +204,7 @@ class TreeMap extends Component {
                     wikiDesc={this.state.wikiDesc}
                     thumbnailUrl={this.state.thumbnailUrl}
                     leftDrawer={this.state.leftDrawer}
-                    bottomDrawer={this.state.bottomDrawer}
+                    openDrawer={this.state.openDrawer}
                     toggleDrawer={this.toggleDrawer}
                 />
             </div>

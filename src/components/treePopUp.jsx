@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Popup } from 'react-mapbox-gl';
 import PopUpButton from './button';
+import {isMobile} from 'react-device-detect';
 
 class TreePopUp extends Component {
     render() {
@@ -34,7 +35,7 @@ class TreePopUp extends Component {
                             </tr>
                         </tbody>
                     </table>
-                    {isClicked ? 
+                    {(isClicked || isMobile) ? 
                         <div style={{display: 'flex', flexDirection: 'row'}}>
                             <PopUpButton 
                                 onClick={onInfoButtonClick}

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
+import { isMobile } from 'react-device-detect';
 
 const styles = {
     list: {
@@ -35,22 +36,13 @@ class TemporaryDrawer extends React.Component {
 
         return (
             <div>
-                <Drawer open={this.props.leftDrawer} onClose={this.props.toggleDrawer}>
-                    <div
-                        tabIndex={0}
-                        role="button"
-                        onClick={this.props.toggleDrawer}
-                        onKeyDown={this.props.toggleDrawer}
-                    >
-                        {/* {this.sideList.bind(null, this.state.wikiData)} */}
-                    </div>
-                </Drawer>
                 <Drawer
-                    anchor="bottom"
-                    open={this.props.bottomDrawer}
+                    anchor={isMobile ? "bottom" : "left"}
+                    open={this.props.openDrawer}
                     onClose={this.props.toggleDrawer}
                 >
                     <div 
+                        style={{width: isMobile ? 'auto' : 350}}
                         tabIndex={0}
                         role="button"
                         onClick={this.props.toggleDrawer}
