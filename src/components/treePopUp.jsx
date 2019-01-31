@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Popup } from 'react-mapbox-gl';
+import MoreInfoButton from './button';
 
 class TreePopUp extends Component {
     render() {
@@ -10,7 +11,7 @@ class TreePopUp extends Component {
                 key={hoveredTree.recordid}
                 coordinates={hoveredTree.geometry.coordinates}
                 offset={15}
-                onClick={onPopUpClick}
+                // onClick={onPopUpClick}
             >
                 <div>
                     <h3>{hoveredTree.fields.libellefrancais}</h3>
@@ -18,6 +19,7 @@ class TreePopUp extends Component {
                     <div>Genre : {hoveredTree.fields.genre}</div>
                     {hoveredTree.fields.dateplantation ? (<div> Année de plantation : {
                         hoveredTree.fields.dateplantation.substr(0, 4)} </div>) : null}
+                    <button onClick={this.props.onInfoButtonClick}>PUTE</button>
                 </div>
             </Popup>
         );

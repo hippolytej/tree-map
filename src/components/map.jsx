@@ -33,6 +33,7 @@ class TreeMap extends Component {
             wikiDesc : ''
         };
         this.toggleDrawer = this.toggleDrawer.bind(this);
+        this.onInfoButtonClick = this.onInfoButtonClick.bind(this);
     }
 
     onMapLoad = (map) => {
@@ -50,22 +51,31 @@ class TreeMap extends Component {
 
     onTreeEndHover = ({ map }) => {
         map.getCanvas().style.cursor = '';
-        this.setState({hoveredTreeID: ''});
+        // this.setState({hoveredTreeID: ''});
     }
 
     onTreeClick = (hoveredTreeID) => {
         this.setState({
-            hoveredTreeID: hoveredTreeID,
-            bottomDrawer: true
-            //mapCenter: this.state.treeDict[hoveredTreeID].geometry.coordinates
+            hoveredTreeID: hoveredTreeID
         });
-        var libelle = this.state.treeDict[hoveredTreeID].fields.libellefrancais;
-        var genre = this.state.treeDict[hoveredTreeID].fields.genre;
-        var espece = this.state.treeDict[hoveredTreeID].fields.espece;
-        var keyword = genre + '_' + espece
-        this.wikiTreeData(keyword);
     };
 
+    // onInfoButtonClick = (hoveredTreeID) => () => {
+    //     console.log('CLICKED')
+    //     this.setState({
+    //         hoveredTreeID: hoveredTreeID,
+    //         bottomDrawer: true
+    //         //mapCenter: this.state.treeDict[hoveredTreeID].geometry.coordinates
+    //     });
+    //     var genre = this.state.treeDict[hoveredTreeID].fields.genre;
+    //     var espece = this.state.treeDict[hoveredTreeID].fields.espece;
+    //     var keyword = genre + '_' + espece
+    //     this.wikiTreeData(keyword);
+    // };
+
+    onInfoButtonClick = () => {
+        return(console.log('BIIITCH'));}
+    
     onPopUpClick = () => {
         this.setState({
             hoveredTreeID: ''
@@ -146,7 +156,7 @@ class TreeMap extends Component {
                 `${urlBase}&action=query&prop=pageimages&titles=${bestResultTitle}&pithumbsize=200`);
             const thumbQueryJson = await thumbQueryResponse.json();
             console.log('thumbQuery Json', thumbQueryJson)
-            var thumbnail = await thumbQueryJson.query.pages[bestResultId].thumbnail.source;
+            thumbnail = await thumbQueryJson.query.pages[bestResultId].thumbnail.source;
             console.log('Thumbnail', thumbnail)
         } catch (error) {
             console.log('thumbnail error', error)
@@ -185,6 +195,7 @@ class TreeMap extends Component {
                         <TreePopUp
                             hoveredTree={this.state.treeDict[hoveredTreeID]}
                             onPopUpClick={this.onPopUpClick}
+                            onInfoButtonCLick={this.onInfoButtonClick}
                         />
                         )}
                 </Map>
