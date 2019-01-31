@@ -24,6 +24,7 @@ class TreeMap extends Component {
             nbTrees: 0,
             treeIds: [],
             hoveredTreeID: '',
+            clickedTreeID: '',
             mapCenter: [2.3466110229492188, 48.85613168160397],
             zoom: [12],
             leftDrawer: false,
@@ -46,39 +47,38 @@ class TreeMap extends Component {
 
     onTreeHover = (hoveredTreeID, { map }) => {
         map.getCanvas().style.cursor = 'pointer';
-        this.setState({hoveredTreeID: hoveredTreeID});
+        this.setState({hoveredTreeID: this.state.clickedTreeID ? '' : hoveredTreeID});
     }
 
     onTreeEndHover = ({ map }) => {
         map.getCanvas().style.cursor = '';
-        // this.setState({hoveredTreeID: ''});
+        this.setState({hoveredTreeID: ''});
     }
 
     onTreeClick = (hoveredTreeID) => {
         this.setState({
-            hoveredTreeID: hoveredTreeID
+            hoveredTreeID: hoveredTreeID,
+            clickedTreeID: hoveredTreeID
         });
     };
 
-    // onInfoButtonClick = (hoveredTreeID) => () => {
-    //     console.log('CLICKED')
-    //     this.setState({
-    //         hoveredTreeID: hoveredTreeID,
-    //         bottomDrawer: true
-    //         //mapCenter: this.state.treeDict[hoveredTreeID].geometry.coordinates
-    //     });
-    //     var genre = this.state.treeDict[hoveredTreeID].fields.genre;
-    //     var espece = this.state.treeDict[hoveredTreeID].fields.espece;
-    //     var keyword = genre + '_' + espece
-    //     this.wikiTreeData(keyword);
-    // };
-
     onInfoButtonClick = () => {
-        return(console.log('BIIITCH'));}
-    
-    onPopUpClick = () => {
+        console.log('CLICKED');
         this.setState({
-            hoveredTreeID: ''
+            bottomDrawer: true
+            //mapCenter: this.state.treeDict[hoveredTreeID].geometry.coordinates
+        });
+        var treeId = this.state.hoveredTreeID ? this.state.hoveredTreeID : this.state.clickedTreeID
+        var genre = this.state.treeDict[treeId].fields.genre;
+        var espece = this.state.treeDict[treeId].fields.espece;
+        var keyword = genre + '_' + espece
+        this.wikiTreeData(keyword);
+    }
+
+    onCloseButtonClick = () => {
+        this.setState({
+            hoveredTreeID: '',
+            clickedTreeID: ''
             //mapCenter: this.state.treeDict[hoveredTreeID].geometry.coordinates
         });
     }
@@ -172,6 +172,7 @@ class TreeMap extends Component {
 
     render() {
         const hoveredTreeID = this.state.hoveredTreeID;
+        const clickedTreeID = this.state.clickedTreeID;
         const mapCenter = this.state.mapCenter;
         const zoom = this.state.zoom;
         return (
@@ -191,11 +192,12 @@ class TreeMap extends Component {
                         treeDict={this.state.treeDict}
                         onTreeClick={this.onTreeClick}
                     />
-                    {(hoveredTreeID || hoveredTreeID === 0) && (
+                    {((hoveredTreeID + clickedTreeID) || (hoveredTreeID + clickedTreeID) === 0) && (
                         <TreePopUp
-                            hoveredTree={this.state.treeDict[hoveredTreeID]}
-                            onPopUpClick={this.onPopUpClick}
-                            onInfoButtonCLick={this.onInfoButtonClick}
+                            isClicked={clickedTreeID ? 1 : 0}
+                            hoveredTree={this.state.treeDict[hoveredTreeID ? hoveredTreeID : clickedTreeID]}
+                            onCloseButtonClick={this.onCloseButtonClick}
+                            onInfoButtonClick={this.onInfoButtonClick}
                         />
                         )}
                 </Map>

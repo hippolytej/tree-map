@@ -5,14 +5,11 @@ import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
     button: {
-        margin: theme.spacing.unit
-    },
-    input: {
-        display: "none"
+        margin: 5
     }
 });
 
-function MoreInfoButton(props) {
+function PopUpButton(props) {
     const { classes } = props;
     return (
         <div>
@@ -21,14 +18,14 @@ function MoreInfoButton(props) {
                 variant="outlined"
                 className={classes.button}
                 onClick={props.onClick}>
-                Default
+                {props.text}
             </Button>
         </div>
     );
 }
 
-MoreInfoButton.propTypes = {
+PopUpButton.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(MoreInfoButton);
+export default withStyles(styles)(PopUpButton);
