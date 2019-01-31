@@ -62,9 +62,8 @@ class TreeMap extends Component {
         var libelle = this.state.treeDict[hoveredTreeID].fields.libellefrancais;
         var genre = this.state.treeDict[hoveredTreeID].fields.genre;
         var espece = this.state.treeDict[hoveredTreeID].fields.espece;
-        var species = libelle + ' ' + espece + ' ' + genre
-        console.log('species', species)
-        this.wikiTreeData(genre);
+        var keyword = genre + '_' + espece
+        this.wikiTreeData(keyword);
     };
 
     onPopUpClick = () => {
@@ -106,23 +105,30 @@ class TreeMap extends Component {
         });
     }
 
-    wikiTreeData = async (species) => {
-        var safeSpecies = species.split(' ').join('%20')
-
+    wikiTreeData = async (keyword) => {
+        var safeKeyword = keyword.split(' ').join('_')
+        console.log('Safe Keyword: ', safeKeyword)
+        var urlBase = 'https://fr.wikipedia.org/w/api.php?format=json&origin=*'
         // First search for a page, get best result, get the title of the best result
-        const searchResponse = await fetch(
-            `https://fr.wikipedia.org/w/api.php?action=opensearch&search=${safeSpecies}&format=json&redirects=resolve&origin=*`);
-        const responseJson = await searchResponse.json();
-        console.log('Search response Json', responseJson);
-        const bestResult = await responseJson[3][0];
-        console.log('Best result', bestResult);
-        var bestResultTitle = await bestResult.split('/').slice(-1)[0]
-        console.log('Best result title', bestResultTitle);
+        var bestResultTitle = ''
+        var bestResultId = 0
+        try {
+            const searchResponse = await fetch(
+                `${urlBase}&action=query&list=search&srsearch=${safeKeyword}`);
+                // `${urlBase}&action=opensearch&search=${safeGenre}+incategory:Arbre&redirects=resolve`);
+            const responseJson = await searchResponse.json();
+            console.log('Search response Json', responseJson);
+            bestResultTitle = await responseJson.query.search[0].title;
+            bestResultId = await responseJson.query.search[0].pageid;
+            console.log('Best result', bestResultTitle);
+        } catch (error) {
+            console.log('search error', error)
+        }
 
         var desc = ''
-        try{
+        try {
             const descQueryResponse = await fetch(
-                `https://fr.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=${bestResultTitle}&origin=*`);
+                `${urlBase}&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=${bestResultTitle}`);
             const descQueryJson = await descQueryResponse.json();
             console.log('descQuery Json', descQueryJson)
             const descPages = await descQueryJson.query.pages;
@@ -137,18 +143,15 @@ class TreeMap extends Component {
         var thumbnail = ''
         try {
             const thumbQueryResponse = await fetch(
-                `https://fr.wikipedia.org/w/api.php?action=query&prop=pageimages&titles=${bestResultTitle}&format=json&pithumbsize=200&origin=*`);
+                `${urlBase}&action=query&prop=pageimages&titles=${bestResultTitle}&pithumbsize=200`);
             const thumbQueryJson = await thumbQueryResponse.json();
             console.log('thumbQuery Json', thumbQueryJson)
-            const thumbPages = await thumbQueryJson.query.pages;
-            console.log('Pages', thumbPages)
-            var thumbnail = await thumbPages[Object.keys(thumbPages)[0]].thumbnail.source;
+            var thumbnail = await thumbQueryJson.query.pages[bestResultId].thumbnail.source;
             console.log('Thumbnail', thumbnail)
         } catch (error) {
             console.log('thumbnail error', error)
         }
 
-        //TODO const description = queryJson;
         return this.setState({
             wikiDesc: desc,
             thumbnailUrl: thumbnail
