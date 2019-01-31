@@ -181,7 +181,7 @@ class TreeMap extends Component {
                         treeDict={this.state.treeDict}
                         onTreeClick={this.onTreeClick}
                     />
-                    {hoveredTreeID && (
+                    {(hoveredTreeID || hoveredTreeID === 0) && (
                         <TreePopUp
                             hoveredTree={this.state.treeDict[hoveredTreeID]}
                             onPopUpClick={this.onPopUpClick}
