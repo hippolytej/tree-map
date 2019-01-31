@@ -5,6 +5,7 @@ import TreeLayer from './treeLayer';
 import TreePopUp from './treePopUp';
 import TemporaryDrawer from './drawer';
 import { token, style } from '../config.json';
+import { isMobile } from 'react-device-detect';
 
 const Map = ReactMapboxGl({
     minZoom: 11,
@@ -47,6 +48,9 @@ class TreeMap extends Component {
     onTreeHover = (hoveredTreeID, { map }) => {
         map.getCanvas().style.cursor = 'pointer';
         this.setState({hoveredTreeID: this.state.clickedTreeID ? '' : hoveredTreeID});
+        if (isMobile) {
+            this.setState({clickedTreeID: hoveredTreeID});
+        }
     }
 
     onTreeEndHover = ({ map }) => {
