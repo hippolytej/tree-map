@@ -59,9 +59,12 @@ class TreeMap extends Component {
             bottomDrawer: true
             //mapCenter: this.state.treeDict[hoveredTreeID].geometry.coordinates
         });
-        var species = this.state.treeDict[hoveredTreeID].fields.libellefrancais;
+        var libelle = this.state.treeDict[hoveredTreeID].fields.libellefrancais;
+        var genre = this.state.treeDict[hoveredTreeID].fields.genre;
+        var espece = this.state.treeDict[hoveredTreeID].fields.espece;
+        var species = libelle + ' ' + espece + ' ' + genre
         console.log('species', species)
-        this.wikiTreeData(species);
+        this.wikiTreeData(genre);
     };
 
     onPopUpClick = () => {
@@ -74,7 +77,8 @@ class TreeMap extends Component {
     toggleDrawer = () => {
         this.setState({
             bottomDrawer: false,
-            thumbnailUrl: ''
+            thumbnailUrl: '',
+            wikiDesc: ''
         });
     };
 
@@ -103,35 +107,46 @@ class TreeMap extends Component {
     }
 
     wikiTreeData = async (species) => {
-        var safeSpecies = species.split(' ').join('_')
+        var safeSpecies = species.split(' ').join('%20')
 
         // First search for a page, get best result, get the title of the best result
         const searchResponse = await fetch(
             `https://fr.wikipedia.org/w/api.php?action=opensearch&search=${safeSpecies}&format=json&redirects=resolve&origin=*`);
         const responseJson = await searchResponse.json();
+        console.log('Search response Json', responseJson);
         const bestResult = await responseJson[3][0];
         console.log('Best result', bestResult);
-        var bestResultTitle = bestResult.split('/').slice(-1)[0]
+        var bestResultTitle = await bestResult.split('/').slice(-1)[0]
         console.log('Best result title', bestResultTitle);
 
-        const descQueryResponse = await fetch(
-            `https://fr.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=${bestResultTitle}&origin=*`);
-        const descQueryJson = await descQueryResponse.json();
-        console.log('descQuery Json', descQueryJson)
-        const descPages = descQueryJson.query.pages;
-        console.log('Pages', descPages)
-        const desc = descPages[Object.keys(descPages)[0]].extract;
-        console.log('desc', desc)
+        var desc = ''
+        try{
+            const descQueryResponse = await fetch(
+                `https://fr.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=${bestResultTitle}&origin=*`);
+            const descQueryJson = await descQueryResponse.json();
+            console.log('descQuery Json', descQueryJson)
+            const descPages = await descQueryJson.query.pages;
+            console.log('Pages', descPages)
+            desc = await descPages[Object.keys(descPages)[0]].extract;
+            console.log('desc', desc)
+        } catch (error) {
+            console.log('desc error', error)
+        }
 
         // Then query the best result's page :)
-        const thumbQueryResponse = await fetch(
-            `https://fr.wikipedia.org/w/api.php?action=query&prop=pageimages&titles=${bestResultTitle}&format=json&pithumbsize=200&origin=*`);
-        const thumbQueryJson = await thumbQueryResponse.json();
-        console.log('thumbQuery Json', thumbQueryJson)
-        const thumbPages = thumbQueryJson.query.pages;
-        console.log('Pages', thumbPages)
-        const thumbnail = thumbPages[Object.keys(thumbPages)[0]].thumbnail.source;
-        console.log('Thumbnail', thumbnail)
+        var thumbnail = ''
+        try {
+            const thumbQueryResponse = await fetch(
+                `https://fr.wikipedia.org/w/api.php?action=query&prop=pageimages&titles=${bestResultTitle}&format=json&pithumbsize=200&origin=*`);
+            const thumbQueryJson = await thumbQueryResponse.json();
+            console.log('thumbQuery Json', thumbQueryJson)
+            const thumbPages = await thumbQueryJson.query.pages;
+            console.log('Pages', thumbPages)
+            var thumbnail = await thumbPages[Object.keys(thumbPages)[0]].thumbnail.source;
+            console.log('Thumbnail', thumbnail)
+        } catch (error) {
+            console.log('thumbnail error', error)
+        }
 
         //TODO const description = queryJson;
         return this.setState({

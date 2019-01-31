@@ -10,11 +10,29 @@ const styles = {
     fullList: {
         width: 'auto',
     },
+    treeImg: {
+        marginTop: 10,
+        marginBottom: 10,
+        marginRight: 10,
+        width: 100,
+        display: 'inlineBlock',
+        float: 'left'
+    },
+    wikiRow: {
+        marginLeft: 10,
+        marginRight: 10,
+    },
+    wikiTextContainer: {
+        marginLeft: 10,
+        marginRight: 10,
+    }
 };
 
 class TemporaryDrawer extends React.Component {
 
     render() {
+        const { classes } = this.props;
+
         return (
             <div>
                 <Drawer open={this.props.leftDrawer} onClose={this.props.toggleDrawer}>
@@ -32,14 +50,18 @@ class TemporaryDrawer extends React.Component {
                     open={this.props.bottomDrawer}
                     onClose={this.props.toggleDrawer}
                 >
-                    <div
+                    <div 
                         tabIndex={0}
                         role="button"
                         onClick={this.props.toggleDrawer}
                         onKeyDown={this.props.toggleDrawer}
                     >
-                        <img src={this.props.thumbnailUrl} alt="Thubnail" />
-                        <p>{this.props.wikiDesc}</p>
+                        <div className={classes.wikiRow}>
+                            <img className={classes.treeImg} src={this.props.thumbnailUrl} alt="Wiki Thumbnail" />
+                        </div>
+                        <div className={classes.wikiTextContainer}>
+                            <p>{this.props.wikiDesc}</p>
+                        </div>
                     </div>
                 </Drawer>
             </div>
