@@ -1,35 +1,34 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
     button: {
-        margin: 0,
-        top: 'auto',
-        right: 40,
-        bottom: 40,
-        left: 'auto',
-        position: 'fixed',
+        margin: theme.spacing.unit
     },
+    input: {
+        display: "none"
+    }
 });
 
-class MenuButton extends Component {
-    render() {
-        const { classes } = this.props;
-        return (
-            <div>
-                <Button variant="fab" color="primary" aria-label="add" className={classes.button}>
-                    <AddIcon />
-                </Button>
-            </div>
-        );
-    }
+function MoreInfoButton(props) {
+    const { classes } = props;
+    return (
+        <div>
+            <Button
+                size="small"
+                variant="outlined"
+                className={classes.button}
+                onClick={props.onClick}>
+                Default
+            </Button>
+        </div>
+    );
 }
 
-MenuButton.propTypes = {
-    classes: PropTypes.object.isRequired,
+MoreInfoButton.propTypes = {
+    classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(MenuButton);
+export default withStyles(styles)(MoreInfoButton);
