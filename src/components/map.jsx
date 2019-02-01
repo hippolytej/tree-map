@@ -47,7 +47,8 @@ class TreeMap extends Component {
 
     onTreeHover = (hoveredTreeID, { map }) => {
         map.getCanvas().style.cursor = 'pointer';
-        this.setState({hoveredTreeID: this.state.clickedTreeID ? '' : hoveredTreeID});
+        this.setState({
+            hoveredTreeID: (this.state.clickedTreeID || this.state.clickedTreeID === 0) ? '' : hoveredTreeID});
         if (isMobile) {
             this.setState({clickedTreeID: hoveredTreeID});
         }
@@ -178,6 +179,8 @@ class TreeMap extends Component {
         const clickedTreeID = this.state.clickedTreeID;
         const mapCenter = this.state.mapCenter;
         const zoom = this.state.zoom;
+        console.log('hoveredTreeID', hoveredTreeID);
+        console.log('clickedTreeID', clickedTreeID);
         return (
             <div>
                 <Map
@@ -195,10 +198,11 @@ class TreeMap extends Component {
                         treeDict={this.state.treeDict}
                         onTreeClick={this.onTreeClick}
                     />
-                    {((hoveredTreeID + clickedTreeID) || (hoveredTreeID + clickedTreeID) === 0) && (
+                    {((hoveredTreeID || clickedTreeID) || (hoveredTreeID === 0) || (clickedTreeID === 0)) && (
                         <TreePopUp
-                            isClicked={clickedTreeID ? 1 : 0}
-                            hoveredTree={this.state.treeDict[hoveredTreeID ? hoveredTreeID : clickedTreeID]}
+                            isClicked={(clickedTreeID || clickedTreeID === 0) ? 1 : 0}
+                            hoveredTree={this.state.treeDict[
+                                (hoveredTreeID || hoveredTreeID === 0) ? hoveredTreeID : clickedTreeID]}
                             onCloseButtonClick={this.onCloseButtonClick}
                             onInfoButtonClick={this.onInfoButtonClick}
                         />
