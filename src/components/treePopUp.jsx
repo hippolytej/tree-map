@@ -10,6 +10,9 @@ class TreePopUp extends Component {
         const onCloseButtonClick = this.props.onCloseButtonClick;
         const onInfoButtonClick = this.props.onInfoButtonClick;
         const isClicked = this.props.isClicked;
+        const long = hoveredTree.geometry.coordinates[0]
+        const lat = hoveredTree.geometry.coordinates[1];
+        const cityMapperLink = `https://citymapper.com/directions?endcoord=${lat}%2C${long}&endname=Arbre%20Remarquable`;
         return (
             <Popup
                 key={hoveredTree.recordid}
@@ -35,16 +38,27 @@ class TreePopUp extends Component {
                             </tr>
                         </tbody>
                     </table>
-                    {(isClicked || isMobile) ? 
-                        <div style={{display: 'flex', flexDirection: 'row'}}>
-                            <PopUpButton 
-                                onClick={onInfoButtonClick}
-                                text="Infos">
-                            </PopUpButton>
-                            <PopUpButton
-                                onClick={onCloseButtonClick}
-                                text="Fermer">
-                            </PopUpButton>
+                    {(isClicked || isMobile) ?
+                        <div style={{ marginLeft: 'auto', marginRight: 'auto'}}>
+                            <a
+                                href={cityMapperLink} 
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                <img
+                                    src="https://static.citymapper.com/img/embed/GetMeThere_Citymapper.png"
+                                    alt="Get directions with Citymapper"
+                                />
+                            </a>
+                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+                                <PopUpButton
+                                    onClick={onInfoButtonClick}
+                                    text="Infos">
+                                </PopUpButton>
+                                <PopUpButton
+                                    onClick={onCloseButtonClick}
+                                    text="Fermer">
+                                </PopUpButton>
+                            </div>
                         </div>
                     : null}
                 </div>
