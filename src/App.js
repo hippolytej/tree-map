@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
-import TreeMap from './components/map'
-import TemporaryDrawer from './components/drawer'
 import './App.css';
+import { Link } from 'react-router-dom'
+import LinkButton from './components/link';
+
+const ExploreLink = props => <Link to="/explore" {...props} />
 
 class App extends Component {
   render() {
     return (
-      <div>
-        <TemporaryDrawer />
-        <TreeMap />
+      <div className="App">
+        <div className="App-header">
+          <h1>Arboricool</h1>
+        </div>
+        <p>Votre guide arboricole</p>
+        <LinkButton text="Explore" link={ExploreLink}>Explore</LinkButton>
       </div>
     );
   }
