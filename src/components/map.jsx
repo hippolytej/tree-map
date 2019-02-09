@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import ReactMapboxGl from 'react-mapbox-gl';
 import { GeolocateControl } from 'mapbox-gl';
 import TreeLayer from './treeLayer';
 import TreePopUp from './treePopUp';
-import LinkButton from './link';
+import LinkButton from './linkbutton';
 import TemporaryDrawer from './drawer';
 import { token, style } from '../config.json';
 import { isMobile } from 'react-device-detect';
@@ -195,7 +195,7 @@ class TreeMap extends Component {
                     flyToOptions={flyToOptions}
                     zoom={zoom}
                 >
-                    <LinkButton text="Home" link={HomeLink}>Home</LinkButton>
+                    <LinkButton text="Accueil" variant="outlined" link={HomeLink}>Home</LinkButton>
                     <TreeLayer
                         onTreeHover={this.onTreeHover}
                         onTreeEndHover={this.onTreeEndHover}

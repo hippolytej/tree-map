@@ -15,9 +15,11 @@ function LinkButton(props) {
         <div>
             <Button
                 size="small"
-                variant="outlined"
+                variant={props.variant}
                 className={classes.button}
-                component={props.link}>
+                component={props.link}
+                href={props.href}
+            >
                 {props.text}
             </Button>
         </div>
