@@ -11,7 +11,8 @@ class HomePage extends Component {
     return (
       <div>
         <header>
-          <h1>Arboricool</h1>
+          <img src="/logo500try1.png" alt="logo" height="200"/>
+          <h1>arboricool</h1>
           <p>Votre guide arboricole</p>
         </header>
         <main>
