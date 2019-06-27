@@ -8,6 +8,8 @@ import LinkButton from './linkbutton';
 import TemporaryDrawer from './drawer';
 import { token, style } from '../config.json';
 import { isMobile } from 'react-device-detect';
+import { wikiData } from '../api_utils/wikiData';
+import { parisData } from '../api_utils/parisData';
 
 const HomeLink = props => <Link to="/" {...props} />
 
@@ -100,82 +102,15 @@ class TreeMap extends Component {
     };
 
     componentDidMount(){
-        this.TreeData();
+        this.treeData();
     }
 
-    TreeData = async () => {
-        var ids = [];
-        const response = await fetch(
-            'https://opendata.paris.fr/api/records/1.0/search/?dataset=arbresremarquablesparis&rows=200');
-        const responseJson = await response.json();
-        var maxNbTrees = Math.min(responseJson.parameters.rows, responseJson.nhits);
-        for (var i = 0; i < maxNbTrees; i++) {
-            ids.push(i)
-        }
-        return this.setState({
-            treeDict: responseJson.records,
-            nbTrees: maxNbTrees,
-            treeIds: ids
-        }, function(){
-            console.log('dict', this.state.treeDict);
-            console.log('nb', this.state.nbTrees);
-            console.log('ids', this.state.treeIds);
-        });
+    treeData() {
+        parisData.apply(this)
     }
 
-    wikiTreeData = async (keyword) => {
-        var safeKeyword = keyword.split(' ').join('_')
-        console.log('Safe Keyword: ', safeKeyword)
-        var urlBase = 'https://fr.wikipedia.org/w/api.php?format=json&origin=*'
-        // First search for a page, get best result, get the title of the best result
-        var bestResultTitle = ''
-        var bestResultId = 0
-        try {
-            const searchResponse = await fetch(
-                `${urlBase}&action=query&list=search&srsearch=${safeKeyword}`);
-                // `${urlBase}&action=opensearch&search=${safeGenre}+incategory:Arbre&redirects=resolve`);
-            const responseJson = await searchResponse.json();
-            console.log('Search response Json', responseJson);
-            bestResultTitle = await responseJson.query.search[0].title;
-            bestResultId = await responseJson.query.search[0].pageid;
-            console.log('Best result', bestResultTitle);
-        } catch (error) {
-            console.log('search error', error)
-        }
-
-        var desc = ''
-        try {
-            const descQueryResponse = await fetch(
-                `${urlBase}&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=${bestResultTitle}`);
-            const descQueryJson = await descQueryResponse.json();
-            console.log('descQuery Json', descQueryJson)
-            const descPages = await descQueryJson.query.pages;
-            console.log('Pages', descPages)
-            desc = await descPages[Object.keys(descPages)[0]].extract;
-            console.log('desc', desc)
-        } catch (error) {
-            console.log('desc error', error)
-        }
-
-        // Then query the best result's page :)
-        var thumbnail = ''
-        try {
-            const thumbQueryResponse = await fetch(
-                `${urlBase}&action=query&prop=pageimages&titles=${bestResultTitle}&pithumbsize=200`);
-            const thumbQueryJson = await thumbQueryResponse.json();
-            console.log('thumbQuery Json', thumbQueryJson)
-            thumbnail = await thumbQueryJson.query.pages[bestResultId].thumbnail.source;
-            console.log('Thumbnail', thumbnail)
-        } catch (error) {
-            console.log('thumbnail error', error)
-        }
-
-        return this.setState({
-            wikiDesc: desc,
-            thumbnailUrl: thumbnail
-        }, function(){
-            console.log('wikiData', this.state.thumbnailUrl);
-        });
+    wikiTreeData() {
+        wikiData.apply(this, arguments)
     }
 
     render() {
