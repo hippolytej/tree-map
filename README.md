@@ -1,4 +1,4 @@
-# Arboricool, votre guide arboricole
+# Canopee, votre guide arboricole
 
 A simple map of Paris' remarkable trees (for now).
 

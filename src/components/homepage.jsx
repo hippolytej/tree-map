@@ -11,13 +11,13 @@ class HomePage extends Component {
     return (
       <div>
         <header>
-          <img src="/logo500try1.png" alt="logo" height="200"/>
-          <h1>arboricool</h1>
+          <img src="/logo_canopee_v0.001.png" alt="logo" height="200" />
+          <h1>canopee</h1>
           <p>Votre guide arboricole</p>
         </header>
         <main>
-            <LinkButton text="Explorez" variant="outlined" link={ExploreLink}/>
-            <LinkButton text="Apprenez" variant="outlined" link={LearnLink}/>
+          <LinkButton text="Explorez" variant="outlined" link={ExploreLink} />
+          <LinkButton text="Apprenez" variant="outlined" link={LearnLink} />
         </main>
         <footer>
           <LinkButton
