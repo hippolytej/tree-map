@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Route, HashRouter, Switch} from 'react-router-dom'
+import { Route, HashRouter, Switch } from 'react-router-dom'
 import './index.css'
 import HomePage from './components/homepage';
 import Explore from './components/explore';
-import Learn from './components/learn';
+import AroundMe from './components/aroundMe';
 import NotFound from './notfound';
 import * as serviceWorker from './serviceWorker';
 
@@ -14,7 +14,7 @@ const routing = (
             <Switch>
                 <Route exact path="/" component={HomePage} />
                 <Route path="/explore" component={Explore} />
-                <Route path="/learn" component={Learn} />
+                <Route path="/around-me" component={AroundMe} />
                 <Route component={NotFound} />
             </Switch>
         </div>

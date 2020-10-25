@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Popup } from 'react-mapbox-gl';
 import PopUpButton from './button';
-import {isMobile} from 'react-device-detect';
+import { isMobile } from 'react-device-detect';
 
 class TreePopUp extends Component {
     render() {
@@ -18,30 +18,33 @@ class TreePopUp extends Component {
                 key={hoveredTree.recordid}
                 coordinates={hoveredTree.geometry.coordinates}
                 offset={15}
-                // style={{maxWidth: 200, minWidth: 200}}
+            // style={{maxWidth: 200, minWidth: 200}}
             >
                 <div style={{ overflowX: 'auto' }}>
-                    <h3 style={{fontFamily: 'Roboto', fontSize: 14, marginTop: 5, marginBottom:5}}>{hoveredTree.fields.libellefrancais}</h3>
+                    <h3 style={{ fontFamily: 'Roboto', fontSize: 14, marginTop: 5, marginBottom: 5 }}>{hoveredTree.fields.libellefrancais}</h3>
                     <table style={{ width: '100%' }}>
                         <tbody>
                             <tr>
-                                <td style={{fontFamily: 'Roboto', fontSize: 14, fontWeight: 'medium'}}>Genre</td>
-                                <td style={{fontFamily: 'Roboto', fontSize: 14, textAlign: 'right' }}>{hoveredTree.fields.genre}</td>
+                                <td style={{ fontFamily: 'Roboto', fontSize: 14, fontWeight: 'medium' }}>Genre</td>
+                                <td style={{ fontFamily: 'Roboto', fontSize: 14, textAlign: 'right' }}>{hoveredTree.fields.genre}</td>
                             </tr>
                             <tr>
-                                <td style={{fontFamily: 'Roboto', fontSize: 14, fontWeight: 'medium'}}>Espèce</td>
-                                <td style={{fontFamily: 'Roboto', fontSize: 14, textAlign: 'right' }}>{hoveredTree.fields.espece}</td>
+                                <td style={{ fontFamily: 'Roboto', fontSize: 14, fontWeight: 'medium' }}>Espèce</td>
+                                <td style={{ fontFamily: 'Roboto', fontSize: 14, textAlign: 'right' }}>{hoveredTree.fields.espece}</td>
                             </tr>
-                            <tr>
-                                <td style={{fontFamily: 'Roboto', fontSize: 14, fontWeight: 'medium'}}>Planté en</td>
-                                <td style={{fontFamily: 'Roboto', fontSize: 14, textAlign: 'right' }}>{hoveredTree.fields.dateplantation.substr(0, 4)}</td>
-                            </tr>
+                            {"dateplantation" in hoveredTree.fields ?
+                                <tr>
+                                    <td style={{ fontFamily: 'Roboto', fontSize: 14, fontWeight: 'medium' }}>Planté en</td>
+                                    <td style={{ fontFamily: 'Roboto', fontSize: 14, textAlign: 'right' }}>{hoveredTree.fields.dateplantation.substr(0, 4)}</td>
+                                </tr>
+                                : null}
+
                         </tbody>
                     </table>
                     {(isClicked || isMobile) ?
-                        <div style={{ marginLeft: 'auto', marginRight: 'auto'}}>
+                        <div style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                             <a
-                                href={cityMapperLink} 
+                                href={cityMapperLink}
                                 target="_blank"
                                 rel="noopener noreferrer">
                                 <img
@@ -49,7 +52,7 @@ class TreePopUp extends Component {
                                     alt="Get directions with Citymapper"
                                 />
                             </a>
-                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                                 <PopUpButton
                                     onClick={onInfoButtonClick}
                                     text="Infos">
@@ -60,7 +63,7 @@ class TreePopUp extends Component {
                                 </PopUpButton>
                             </div>
                         </div>
-                    : null}
+                        : null}
                 </div>
             </Popup>
         );

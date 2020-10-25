@@ -9,7 +9,7 @@ import TemporaryDrawer from './drawer';
 import { token, style } from '../config.json';
 import { isMobile } from 'react-device-detect';
 import { wikiData } from '../api_utils/wikiData';
-import { parisData } from '../api_utils/parisData';
+import { remarkableParisData } from '../api_utils/parisData';
 
 const HomeLink = props => <Link to="/" {...props} />
 
@@ -24,7 +24,7 @@ const flyToOptions = {
 };
 
 class TreeMap extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             treeDict: '',
@@ -36,8 +36,8 @@ class TreeMap extends Component {
             zoom: [12],
             openDrawer: false,
             wikiTreeData: '',
-            thumbnailUrl : '',
-            wikiDesc : ''
+            thumbnailUrl: '',
+            wikiDesc: ''
         };
         this.toggleDrawer = this.toggleDrawer.bind(this);
         this.onInfoButtonClick = this.onInfoButtonClick.bind(this);
@@ -46,23 +46,25 @@ class TreeMap extends Component {
     onMapLoad = (map) => {
         map.addControl(
             new GeolocateControl({
-                positionOptions: {enableHighAccuracy: true},
-                trackUserLocation: false})
-                );
-      };
+                positionOptions: { enableHighAccuracy: true },
+                trackUserLocation: false
+            })
+        );
+    };
 
     onTreeHover = (hoveredTreeID, { map }) => {
         map.getCanvas().style.cursor = 'pointer';
         this.setState({
-            hoveredTreeID: (this.state.clickedTreeID || this.state.clickedTreeID === 0) ? '' : hoveredTreeID});
+            hoveredTreeID: (this.state.clickedTreeID || this.state.clickedTreeID === 0) ? '' : hoveredTreeID
+        });
         if (isMobile) {
-            this.setState({clickedTreeID: hoveredTreeID});
+            this.setState({ clickedTreeID: hoveredTreeID });
         }
     }
 
     onTreeEndHover = ({ map }) => {
         map.getCanvas().style.cursor = '';
-        this.setState({hoveredTreeID: ''});
+        this.setState({ hoveredTreeID: '' });
     }
 
     onTreeClick = (hoveredTreeID) => {
@@ -101,12 +103,12 @@ class TreeMap extends Component {
         });
     };
 
-    componentDidMount(){
+    componentDidMount() {
         this.treeData();
     }
 
     treeData() {
-        parisData.apply(this)
+        remarkableParisData.apply(this)
     }
 
     wikiTreeData() {
@@ -126,7 +128,7 @@ class TreeMap extends Component {
                     onStyleLoad={this.onMapLoad}
                     style={mapStyle}
                     center={mapCenter}
-                    containerStyle={{ width: '100vw', height: '100vh'}}
+                    containerStyle={{ width: '100vw', height: '100vh' }}
                     flyToOptions={flyToOptions}
                     zoom={zoom}
                 >
@@ -138,15 +140,15 @@ class TreeMap extends Component {
                         treeDict={this.state.treeDict}
                         onTreeClick={this.onTreeClick}
                     />
-                    {((hoveredTreeID || clickedTreeID) || (hoveredTreeID === 0) || (clickedTreeID === 0)) && (
+                    {((hoveredTreeID || clickedTreeID) || (hoveredTreeID === 0) || (clickedTreeID === 0)) && (
                         <TreePopUp
                             isClicked={(clickedTreeID || clickedTreeID === 0) ? 1 : 0}
                             hoveredTree={this.state.treeDict[
-                                (hoveredTreeID || hoveredTreeID === 0) ? hoveredTreeID : clickedTreeID]}
+                                (hoveredTreeID || hoveredTreeID === 0) ? hoveredTreeID : clickedTreeID]}
                             onCloseButtonClick={this.onCloseButtonClick}
                             onInfoButtonClick={this.onInfoButtonClick}
                         />
-                        )}
+                    )}
                 </Map>
                 <TemporaryDrawer
                     wikiDesc={this.state.wikiDesc}

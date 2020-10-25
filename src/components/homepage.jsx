@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Link } from 'react-router-dom'
 import LinkButton from './linkbutton';
+import TextField from './textfield';
 
 const ExploreLink = props => <Link to="/explore" {...props} />
-const LearnLink = props => <Link to="/learn" {...props} />
+const AroundMeLink = props => <Link to="/around-me" {...props} />
 
 class HomePage extends Component {
   render() {
@@ -17,8 +18,11 @@ class HomePage extends Component {
         </header>
         <main>
           <LinkButton text="Explorez" variant="outlined" link={ExploreLink} />
-          <LinkButton text="Apprenez" variant="outlined" link={LearnLink} />
+          <LinkButton text="Autour de vous" variant="outlined" link={AroundMeLink} />
         </main>
+        <main2>
+          <TextField text="Explorez" />
+        </main2>
         <footer>
           <LinkButton
             className="inner"
