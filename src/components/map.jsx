@@ -24,7 +24,7 @@ class TreeMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      treeDict: "",
+      treeArray: "",
       nbTrees: 0,
       treeIds: [],
       hoveredTreeID: "",
@@ -83,9 +83,9 @@ class TreeMap extends Component {
     var treeId = this.state.hoveredTreeID
       ? this.state.hoveredTreeID
       : this.state.clickedTreeID;
-    var name = this.state.treeDict[treeId].fields.libellefrancais;
-    var genre = this.state.treeDict[treeId].fields.genre;
-    var espece = this.state.treeDict[treeId].fields.espece;
+    var name = this.state.treeArray[treeId].fields.libellefrancais;
+    var genre = this.state.treeArray[treeId].fields.genre;
+    var espece = this.state.treeArray[treeId].fields.espece;
     var keyword = genre + "_" + espece;
     this.wikiTreeData(keyword);
     this.setState({ clickedTreeName: name });
@@ -141,8 +141,9 @@ class TreeMap extends Component {
             onTreeHover={this.onTreeHover}
             onTreeEndHover={this.onTreeEndHover}
             treeIds={this.state.treeIds}
-            treeDict={this.state.treeDict}
+            treeArray={this.state.treeArray}
             onTreeClick={this.onTreeClick}
+            markerType="symbol"
           />
           {(hoveredTreeID ||
             clickedTreeID ||
@@ -151,12 +152,13 @@ class TreeMap extends Component {
             <TreePopUp
               isClicked={clickedTreeID || clickedTreeID === 0 ? 1 : 0}
               hoveredTree={
-                this.state.treeDict[
+                this.state.treeArray[
                   hoveredTreeID || hoveredTreeID === 0
                     ? hoveredTreeID
                     : clickedTreeID
                 ]
               }
+              getMeThere={true}
               onCloseButtonClick={this.onCloseButtonClick}
               onInfoButtonClick={this.onInfoButtonClick}
             />

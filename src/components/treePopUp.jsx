@@ -99,16 +99,18 @@ class TreePopUp extends Component {
           </table>
           {isClicked || isMobile ? (
             <div style={{ marginLeft: "auto", marginRight: "auto" }}>
-              <a
-                href={cityMapperLink}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  src="https://static.citymapper.com/img/embed/GetMeThere_Citymapper.png"
-                  alt="Get directions with Citymapper"
-                />
-              </a>
+              {this.props.getMeThere ? (
+                <a
+                  href={cityMapperLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src="https://static.citymapper.com/img/embed/GetMeThere_Citymapper.png"
+                    alt="Get directions with Citymapper"
+                  />
+                </a>
+              ) : null}
               <div
                 style={{
                   display: "flex",

@@ -18,19 +18,37 @@ const Map = ReactMapboxGl({
   accessToken: token,
 });
 const mapStyle = style;
-const radius = 500;
+const radius = 100;
 const flyToOptions = {
   speed: 0,
 };
+
+function ColorDot(id, name, color) {
+  return (
+    <li key={id}>
+      <span
+        style={{
+          height: 16,
+          width: 16,
+          backgroundColor: color,
+          borderRadius: 50,
+          display: "inline-block",
+        }}
+      >
+        <span style={{ paddingLeft: 30 }}>{name}</span>
+      </span>
+    </li>
+  );
+}
 
 class aroundMe extends Component {
   constructor(props) {
     super(props);
     this.state = {
       locationAvailable: false,
-      treeDict: "",
+      treeArray: [],
+      treeNamesDict: {},
       nbTrees: 0,
-      treeIds: [],
       hoveredTreeID: "",
       clickedTreeID: "",
       address: this.props.location.state
@@ -38,7 +56,7 @@ class aroundMe extends Component {
         : "",
       latitude: 0,
       longitude: 0,
-      zoom: [17],
+      zoom: [19],
       openDrawer: false,
       wikiTreeData: "",
       thumbnailUrl: "",
@@ -136,13 +154,12 @@ class aroundMe extends Component {
     console.log("CLICKED");
     this.setState({
       openDrawer: true,
-      //mapCenter: this.state.treeDict[hoveredTreeID].geometry.coordinates
     });
     var treeId = this.state.hoveredTreeID
       ? this.state.hoveredTreeID
       : this.state.clickedTreeID;
-    var genre = this.state.treeDict[treeId].fields.genre;
-    var espece = this.state.treeDict[treeId].fields.espece;
+    var genre = this.state.treeArray[treeId].fields.genre;
+    var espece = this.state.treeArray[treeId].fields.espece;
     var keyword = genre + "_" + espece;
     this.wikiTreeData(keyword);
   };
@@ -151,7 +168,6 @@ class aroundMe extends Component {
     this.setState({
       hoveredTreeID: "",
       clickedTreeID: "",
-      //mapCenter: this.state.treeDict[hoveredTreeID].geometry.coordinates
     });
   };
 
@@ -185,13 +201,37 @@ class aroundMe extends Component {
           <LinkButton text="Accueil" variant="outlined" to="/">
             Home
           </LinkButton>
-          <TreeLayer
-            onTreeHover={this.onTreeHover}
-            onTreeEndHover={this.onTreeEndHover}
-            treeIds={this.state.treeIds}
-            treeDict={this.state.treeDict}
-            onTreeClick={this.onTreeClick}
-          />
+          <div
+            style={{
+              position: "fixed",
+              top: 20,
+              right: 100,
+            }}
+          >
+            {this.state.nbTrees ? (
+              <ul style={{ listStyle: null }}>
+                {Object.keys(this.state.treeNamesDict).map((item, i) =>
+                  ColorDot(i, item, this.state.treeNamesDict[item]["color"])
+                )}
+              </ul>
+            ) : (
+              "Pas d'arbres par ici :("
+            )}
+          </div>
+          {Object.keys(this.state.treeNamesDict).map((item, i) => (
+            <TreeLayer
+              key={i}
+              treeType={item}
+              onTreeHover={this.onTreeHover}
+              onTreeEndHover={this.onTreeEndHover}
+              treeIds={this.state.treeNamesDict[item]["ids"]}
+              treeArray={this.state.treeArray}
+              onTreeClick={this.onTreeClick}
+              markerType="circle"
+              color={this.state.treeNamesDict[item]["color"]}
+            />
+          ))}
+
           {(hoveredTreeID ||
             clickedTreeID ||
             hoveredTreeID === 0 ||
@@ -199,12 +239,13 @@ class aroundMe extends Component {
             <TreePopUp
               isClicked={clickedTreeID || clickedTreeID === 0 ? 1 : 0}
               hoveredTree={
-                this.state.treeDict[
+                this.state.treeArray[
                   hoveredTreeID || hoveredTreeID === 0
                     ? hoveredTreeID
                     : clickedTreeID
                 ]
               }
+              getMeThere={false}
               onCloseButtonClick={this.onCloseButtonClick}
               onInfoButtonClick={this.onInfoButtonClick}
             />

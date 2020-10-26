@@ -10,7 +10,7 @@ export async function remarkableParisData() {
   }
   return this.setState(
     {
-      treeDict: responseJson.records,
+      treeArray: responseJson.records,
       nbTrees: maxNbTrees,
       treeIds: ids,
     },
@@ -31,14 +31,25 @@ export async function parisData(latitude, longitude, radius) {
   );
   const responseJson = await response.json();
   var maxNbTrees = Math.min(responseJson.parameters.rows, responseJson.nhits);
+  var treeNamesDict = {};
   for (var i = 0; i < maxNbTrees; i++) {
     ids.push(i);
+    var libelle = responseJson.records[i].fields.libellefrancais;
+    if (libelle in treeNamesDict) {
+      treeNamesDict[libelle]["ids"].push(i);
+    } else {
+      treeNamesDict[libelle] = {
+        ids: [i],
+        color: "#" + (((1 << 24) * Math.random()) | 0).toString(16),
+      };
+    }
   }
+
   return this.setState(
     {
-      treeDict: responseJson.records,
+      treeArray: responseJson.records,
+      treeNamesDict: treeNamesDict,
       nbTrees: maxNbTrees,
-      treeIds: ids,
     },
     function () {
       console.log("nb loaded trees", this.state.nbTrees);
