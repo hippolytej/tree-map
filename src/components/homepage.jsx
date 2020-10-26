@@ -1,21 +1,21 @@
 import React, { Component } from "react";
 import "../App.css";
-import { Link } from "react-router-dom";
 import LinkButton from "./linkbutton";
-import TextField from "./textfield";
-
-const ExploreLink = (props) => <Link to="/explore" {...props} />;
-const AroundMeLink = (props) => (
-  <Link
-    to={{
-      pathname: "/around-me",
-      state: { latitude: 48.83613168160397, longitude: 2.3466110229492188 },
-    }}
-    {...props}
-  />
-);
+import AddressForm from "./addressForm";
 
 class HomePage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      address: "",
+    };
+    this.handleAddressChange = this.handleAddressChange.bind(this);
+  }
+
+  handleAddressChange(value) {
+    this.setState({ address: value });
+  }
+
   render() {
     return (
       <div>
@@ -25,29 +25,29 @@ class HomePage extends Component {
           <p>Votre guide arboricole</p>
         </header>
         <main>
-          <LinkButton text="Explorez" variant="outlined" link={ExploreLink} />
+          <LinkButton text="Explorez" variant="outlined" to="/explore" />
           <LinkButton
             text="Autour de vous"
             variant="outlined"
-            link={AroundMeLink}
+            to={{ pathname: "/around-me", state: this.state }}
           />
-          <TextField text="Explorez" />
+          <AddressForm
+            onChange={this.handleAddressChange}
+            value={this.state.address}
+          />
         </main>
         <footer>
           <LinkButton
             className="inner"
             text="Code"
-            link={"a"}
             href={"https://github.com/hippolytej/tree-map"}
           />
           <LinkButton
             text="Coolitude"
-            link={"a"}
             href={"https://www.arbres.org/actualite.html"}
           />
           <LinkButton
             text="Data"
-            link={"a"}
             href={
               "https://opendata.paris.fr/explore/dataset/les-arbres/information/"
             }

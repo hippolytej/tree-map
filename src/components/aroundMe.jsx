@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "../App.css";
-import { Link } from "react-router-dom";
 import TreePopUp from "./treePopUp";
 import LinkButton from "./linkbutton";
 import TemporaryDrawer from "./drawer";
@@ -11,8 +10,7 @@ import { wikiData } from "../api_utils/wikiData";
 import { parisData } from "../api_utils/parisData";
 import TreeLayer from "./treeLayer";
 import CircularIndeterminate from "./progress";
-
-const HomeLink = (props) => <Link to="/" {...props} />;
+import { getCoordinates } from "../api_utils/geocode";
 
 const Map = ReactMapboxGl({
   minZoom: 11,
@@ -28,27 +26,19 @@ const flyToOptions = {
 class aroundMe extends Component {
   constructor(props) {
     super(props);
-    var latitude = 0;
-    var longitude = 0;
-    var gotLocation = false;
-    if (this.props.location.state) {
-      latitude = this.props.location.state.latitude;
-      longitude = this.props.location.state.longitude;
-      gotLocation = true;
-      console.log("USING LINK DATA");
-    } else {
-      console.log("USING DEFAULT DATA");
-    }
     this.state = {
-      locationAvailable: gotLocation,
+      locationAvailable: false,
       treeDict: "",
       nbTrees: 0,
       treeIds: [],
       hoveredTreeID: "",
       clickedTreeID: "",
-      latitude: latitude,
-      longitude: longitude,
-      zoom: [16],
+      address: this.props.location.state
+        ? this.props.location.state.address
+        : "",
+      latitude: 0,
+      longitude: 0,
+      zoom: [17],
       openDrawer: false,
       wikiTreeData: "",
       thumbnailUrl: "",
@@ -64,7 +54,6 @@ class aroundMe extends Component {
         locationAvailable: true,
       },
       () => {
-        console.log("GOTLOCATION");
         parisData.apply(this, [
           this.state.latitude,
           this.state.longitude,
@@ -72,8 +61,6 @@ class aroundMe extends Component {
         ]);
       }
     );
-    console.log("lat", this.state.latitude);
-    console.log("long", this.state.longitude);
   };
 
   errorHandler = (err) => {
@@ -85,8 +72,16 @@ class aroundMe extends Component {
   };
 
   getUserPosition() {
-    console.log("CALLED");
-    if (navigator.geolocation) {
+    console.log("CALLED WITH ", this.state);
+    if (this.state.address) {
+      getCoordinates.apply(this, [this.state.address, token]).then(() => {
+        parisData.apply(this, [
+          this.state.latitude,
+          this.state.longitude,
+          radius,
+        ]);
+      });
+    } else if (navigator.geolocation) {
       var options = { timeout: 60000 };
       navigator.geolocation.getCurrentPosition(
         this.locationFound,
@@ -94,7 +89,9 @@ class aroundMe extends Component {
         options
       );
     } else {
-      alert("Sorry, browser does not support geolocation!");
+      alert(
+        "Sorry, browser does not support geolocation and no address was supplied"
+      );
     }
   }
 
@@ -185,7 +182,7 @@ class aroundMe extends Component {
           flyToOptions={flyToOptions}
           zoom={zoom}
         >
-          <LinkButton text="Accueil" variant="outlined" link={HomeLink}>
+          <LinkButton text="Accueil" variant="outlined" to="/">
             Home
           </LinkButton>
           <TreeLayer

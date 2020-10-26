@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import ReactMapboxGl from "react-mapbox-gl";
 import { GeolocateControl } from "mapbox-gl";
 import TreeLayer from "./treeLayer";
@@ -10,8 +9,6 @@ import { token, style } from "../config.json";
 import { isMobile } from "react-device-detect";
 import { wikiData } from "../api_utils/wikiData";
 import { remarkableParisData } from "../api_utils/parisData";
-
-const HomeLink = (props) => <Link to="/" {...props} />;
 
 const Map = ReactMapboxGl({
   minZoom: 11,
@@ -137,7 +134,7 @@ class TreeMap extends Component {
           flyToOptions={flyToOptions}
           zoom={zoom}
         >
-          <LinkButton text="Accueil" variant="outlined" link={HomeLink}>
+          <LinkButton text="Accueil" variant="outlined" to="/">
             Home
           </LinkButton>
           <TreeLayer
