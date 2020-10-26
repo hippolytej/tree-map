@@ -1,11 +1,19 @@
-import React, { Component } from 'react';
-import '../App.css';
-import { Link } from 'react-router-dom'
-import LinkButton from './linkbutton';
-import TextField from './textfield';
+import React, { Component } from "react";
+import "../App.css";
+import { Link } from "react-router-dom";
+import LinkButton from "./linkbutton";
+import TextField from "./textfield";
 
-const ExploreLink = props => <Link to="/explore" {...props} />
-const AroundMeLink = props => <Link to="/around-me" {...props} />
+const ExploreLink = (props) => <Link to="/explore" {...props} />;
+const AroundMeLink = (props) => (
+  <Link
+    to={{
+      pathname: "/around-me",
+      state: { latitude: 48.83613168160397, longitude: 2.3466110229492188 },
+    }}
+    {...props}
+  />
+);
 
 class HomePage extends Component {
   render() {
@@ -18,11 +26,13 @@ class HomePage extends Component {
         </header>
         <main>
           <LinkButton text="Explorez" variant="outlined" link={ExploreLink} />
-          <LinkButton text="Autour de vous" variant="outlined" link={AroundMeLink} />
-        </main>
-        <main2>
+          <LinkButton
+            text="Autour de vous"
+            variant="outlined"
+            link={AroundMeLink}
+          />
           <TextField text="Explorez" />
-        </main2>
+        </main>
         <footer>
           <LinkButton
             className="inner"
@@ -38,7 +48,9 @@ class HomePage extends Component {
           <LinkButton
             text="Data"
             link={"a"}
-            href={"https://opendata.paris.fr/explore/dataset/les-arbres/information/"}
+            href={
+              "https://opendata.paris.fr/explore/dataset/les-arbres/information/"
+            }
           />
         </footer>
       </div>
