@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
-import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+// import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import ImageWithStatusText from "./image";
 import { isMobile } from "react-device-detect";
 
@@ -65,12 +65,18 @@ class TemporaryDrawer extends React.Component {
 
   mobileDrawer(classes, treeName) {
     return (
-      <SwipeableDrawer
+      <Drawer
         anchor="bottom"
         open={this.props.openDrawer}
         onClose={this.props.toggleDrawer}
       >
-        <div className={classes.mobileContent} tabIndex={0} role="button">
+        <div
+          className={classes.mobileContent}
+          tabIndex={0}
+          role="button"
+          onClick={this.props.toggleDrawer}
+          onKeyDown={this.props.toggleDrawer}
+        >
           <div className={classes.wikiRow}>
             {treeName}
             <ImageWithStatusText
@@ -83,7 +89,7 @@ class TemporaryDrawer extends React.Component {
             <p>{this.props.wikiDesc}</p>
           </div>
         </div>
-      </SwipeableDrawer>
+      </Drawer>
     );
   }
 

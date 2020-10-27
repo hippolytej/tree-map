@@ -1,13 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
+import Input from "@material-ui/core/Input";
 
 const styles = (theme) => ({
-  root: {
-    margin: 5,
+  input: {
+    paddingTop: 20,
+    margin: "auto",
     textAlign: "center",
     justifyContent: "center",
+    alignItems: "center",
+    width: "230px",
   },
 });
 
@@ -33,16 +36,14 @@ class AddressForm extends React.Component {
     const { classes } = this.props;
     return (
       <form className={classes.root} noValidate autoComplete="off">
-        <TextField
-          id="address-basic"
-          label="Ou à cette adresse"
-          type="search"
+        <Input
+          placeholder="Ou à cette adresse"
+          className={classes.input}
+          inputProps={{ style: { textAlign: "center" } }}
+          value={this.props.value}
           onChange={this.handleChange}
           onKeyDown={this.onEnterDown}
-          value={this.props.value}
-          margin="normal"
-          fullWidth
-          variant="outlined"
+          fullWidth={true}
         />
       </form>
     );
