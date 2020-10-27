@@ -16,9 +16,19 @@ class ImageWithStatusText extends React.Component {
     this.setState({ imageLoaded: false });
   }
 
-  componentDidMount() {
-    setTimeout(() => this.setState({ imageLoaded: true }), 1000);
-  }
+  componentDidMount = () => {
+    this.timerHandle = setTimeout(() => {
+      this.setState({ imageLoaded: true });
+      this.timerHandle = false;
+    }, 3000);
+  };
+
+  componentWillUnmount = () => {
+    if (this.timerHandle) {
+      clearTimeout(this.timerHandle);
+      this.timerHandle = false;
+    }
+  };
 
   render() {
     const imageLoaded = this.state.imageLoaded;
@@ -30,7 +40,7 @@ class ImageWithStatusText extends React.Component {
           onLoad={this.handleImageLoaded.bind(this)}
           onError={this.handleImageErrored.bind(this)}
           alt=""
-          style={{ paddingTop: 10 }}
+          style={this.props.style}
         />
         {imageLoaded ? null : <CircularIndeterminate />}
       </div>

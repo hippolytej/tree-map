@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "../App.css";
-import LinkButton from "./linkbutton";
+import { RegularLink, FloatingLink } from "./linkbuttons";
 import AddressForm from "./addressForm";
 
 class HomePage extends Component {
@@ -25,37 +25,34 @@ class HomePage extends Component {
     return (
       <div>
         <header>
-          <img src="/logo_canopee_v0.001.png" alt="logo" height="200" />
-          <h1>canopee</h1>
-          <p>Votre guide arboricole</p>
+          <img src="/logo_canopee_v0.001.png" alt="logo" height={"100%"} />
         </header>
         <main>
           <h3>Explorez le Paris des arbres remarquables</h3>
-          <LinkButton text="Carte" variant="outlined" to="/explore" />
+          <FloatingLink text="Carte" variant="outlined" to="/explore" />
           <h3>Faites conaissance avec les arbres qui vous entourent</h3>
+          <FloatingLink
+            text="Autour de vous"
+            variant="outlined"
+            to={{ pathname: "/around-me", state: this.state }}
+          />
           <AddressForm
             onChange={this.handleAddressChange}
             onEnterDown={this.onEnterDown}
             value={this.state.address}
           />
-          <p style={{ paddingTop: 0, paddingBottom: 0 }}>ou bien</p>
-          <LinkButton
-            text="Autour de vous"
-            variant="outlined"
-            to={{ pathname: "/around-me", state: this.state }}
-          />
         </main>
         <footer>
-          <LinkButton
+          <RegularLink
             className="inner"
             text="Code"
             href={"https://github.com/hippolytej/tree-map"}
           />
-          <LinkButton
+          <RegularLink
             text="Coolitude"
             href={"https://www.arbres.org/actualite.html"}
           />
-          <LinkButton
+          <RegularLink
             text="Data"
             href={
               "https://opendata.paris.fr/explore/dataset/les-arbres/information/"

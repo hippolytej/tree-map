@@ -4,8 +4,10 @@ import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 
 const styles = (theme) => ({
-  button: {
+  root: {
     margin: 5,
+    textAlign: "center",
+    justifyContent: "center",
   },
 });
 
@@ -33,7 +35,7 @@ class AddressForm extends React.Component {
       <form className={classes.root} noValidate autoComplete="off">
         <TextField
           id="address-basic"
-          label="A cette adresse"
+          label="Ou à cette adresse"
           type="search"
           onChange={this.handleChange}
           onKeyDown={this.onEnterDown}

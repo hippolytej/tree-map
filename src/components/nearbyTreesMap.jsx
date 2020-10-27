@@ -3,7 +3,7 @@ import "../App.css";
 import { token, style } from "../config.json";
 // Components
 import TreePopUp from "./treePopUp";
-import LinkButton from "./linkbutton";
+import { RegularLink } from "./linkbuttons";
 import TemporaryDrawer from "./drawer";
 import ReactMapboxGl from "react-mapbox-gl";
 import TreeLayer from "./treeLayer";
@@ -127,9 +127,9 @@ class NearbyTreesMap extends Component {
           flyToOptions={flyToOptions}
           zoom={zoom}
         >
-          <LinkButton text="Accueil" variant="outlined" to="/">
+          <RegularLink text="Accueil" variant="outlined" to="/">
             Home
-          </LinkButton>
+          </RegularLink>
           <div
             style={{
               position: "fixed",
