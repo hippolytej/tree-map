@@ -6,7 +6,7 @@ class Explore extends Component {
     return (
       <div>
         <NearbyTreesMap
-          adress={
+          address={
             this.props.location.state ? this.props.location.state.address : ""
           }
         />

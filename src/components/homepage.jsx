@@ -10,10 +10,15 @@ class HomePage extends Component {
       address: "",
     };
     this.handleAddressChange = this.handleAddressChange.bind(this);
+    this.onEnterDown = this.onEnterDown.bind(this);
   }
 
   handleAddressChange(value) {
     this.setState({ address: value });
+  }
+
+  onEnterDown() {
+    this.props.history.push({ pathname: "/around-me", state: this.state });
   }
 
   render() {
@@ -25,15 +30,19 @@ class HomePage extends Component {
           <p>Votre guide arboricole</p>
         </header>
         <main>
-          <LinkButton text="Explorez" variant="outlined" to="/explore" />
+          <h3>Explorez le Paris des arbres remarquables</h3>
+          <LinkButton text="Carte" variant="outlined" to="/explore" />
+          <h3>Faites conaissance avec les arbres qui vous entourent</h3>
+          <AddressForm
+            onChange={this.handleAddressChange}
+            onEnterDown={this.onEnterDown}
+            value={this.state.address}
+          />
+          <p style={{ paddingTop: 0, paddingBottom: 0 }}>ou bien</p>
           <LinkButton
             text="Autour de vous"
             variant="outlined"
             to={{ pathname: "/around-me", state: this.state }}
-          />
-          <AddressForm
-            onChange={this.handleAddressChange}
-            value={this.state.address}
           />
         </main>
         <footer>

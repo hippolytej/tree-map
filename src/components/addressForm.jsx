@@ -13,11 +13,18 @@ class AddressForm extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.onEnterDown = this.onEnterDown.bind(this);
   }
 
   handleChange(event) {
     const text = event.target.value;
     this.props.onChange(text);
+  }
+
+  onEnterDown(e) {
+    if (e.keyCode === 13) {
+      this.props.onEnterDown();
+    }
   }
 
   render() {
@@ -26,9 +33,14 @@ class AddressForm extends React.Component {
       <form className={classes.root} noValidate autoComplete="off">
         <TextField
           id="address-basic"
-          label="Address"
+          label="A cette adresse"
+          type="search"
           onChange={this.handleChange}
+          onKeyDown={this.onEnterDown}
           value={this.props.value}
+          margin="normal"
+          fullWidth
+          variant="outlined"
         />
       </form>
     );
