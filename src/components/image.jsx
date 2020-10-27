@@ -16,6 +16,10 @@ class ImageWithStatusText extends React.Component {
     this.setState({ imageLoaded: false });
   }
 
+  componentDidMount() {
+    setTimeout(() => this.setState({ imageLoaded: true }), 3000);
+  }
+
   render() {
     const imageLoaded = this.state.imageLoaded;
     const imageUrl = this.props.imageUrl;
