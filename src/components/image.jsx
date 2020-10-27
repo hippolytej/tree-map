@@ -26,6 +26,7 @@ class ImageWithStatusText extends React.Component {
           onLoad={this.handleImageLoaded.bind(this)}
           onError={this.handleImageErrored.bind(this)}
           alt=""
+          style={{ paddingTop: 10 }}
         />
         {imageLoaded ? null : <CircularIndeterminate />}
       </div>

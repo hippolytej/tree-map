@@ -1,13 +1,11 @@
 import React, { Component } from "react";
-import TreeMap from "./map";
-import TemporaryDrawer from "./drawer";
+import RemarkableTreesMap from "./remarkableTreesMap";
 
 class Explore extends Component {
   render() {
     return (
       <div>
-        <TemporaryDrawer />
-        <TreeMap />
+        <RemarkableTreesMap />
       </div>
     );
   }

@@ -1,14 +1,14 @@
 import React, { Component } from "react";
+import { token, style } from "../config.json";
+// Components
 import ReactMapboxGl from "react-mapbox-gl";
-import { GeolocateControl } from "mapbox-gl";
 import TreeLayer from "./treeLayer";
 import TreePopUp from "./treePopUp";
 import LinkButton from "./linkbutton";
 import TemporaryDrawer from "./drawer";
-import { token, style } from "../config.json";
-import { isMobile } from "react-device-detect";
-import { wikiData } from "../api_utils/wikiData";
-import { remarkableParisData } from "../api_utils/parisData";
+// Utils
+import { remarkableParisData } from "../utils/parisData";
+import * as mapUtils from "../utils/map_utils";
 
 const Map = ReactMapboxGl({
   minZoom: 11,
@@ -20,7 +20,7 @@ const flyToOptions = {
   speed: 0.6,
 };
 
-class TreeMap extends Component {
+class RemarkableTreesMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,86 +37,18 @@ class TreeMap extends Component {
       thumbnailUrl: "",
       wikiDesc: "",
     };
-    this.toggleDrawer = this.toggleDrawer.bind(this);
-    this.onInfoButtonClick = this.onInfoButtonClick.bind(this);
+    this.onTreeHover = mapUtils.onTreeHover.bind(this);
+    this.onTreeEndHover = mapUtils.onTreeEndHover.bind(this);
+    this.onTreeClick = mapUtils.onTreeClick.bind(this);
+    this.onInfoButtonClick = mapUtils.onInfoButtonClick.bind(this);
+    this.onCloseButtonClick = mapUtils.onCloseButtonClick.bind(this);
+    this.toggleDrawer = mapUtils.toggleDrawer.bind(this);
+    this.onMapLoad = mapUtils.onMapLoad.bind(this);
+    this.treeData = remarkableParisData.bind(this);
   }
-
-  onMapLoad = (map) => {
-    map.addControl(
-      new GeolocateControl({
-        positionOptions: { enableHighAccuracy: true },
-        trackUserLocation: false,
-      })
-    );
-  };
-
-  onTreeHover = (hoveredTreeID, { map }) => {
-    map.getCanvas().style.cursor = "pointer";
-    this.setState({
-      hoveredTreeID:
-        this.state.clickedTreeID || this.state.clickedTreeID === 0
-          ? ""
-          : hoveredTreeID,
-    });
-    if (isMobile) {
-      this.setState({ clickedTreeID: hoveredTreeID });
-    }
-  };
-
-  onTreeEndHover = ({ map }) => {
-    map.getCanvas().style.cursor = "";
-    this.setState({ hoveredTreeID: "" });
-  };
-
-  onTreeClick = (hoveredTreeID) => {
-    this.setState({
-      hoveredTreeID: hoveredTreeID,
-      clickedTreeID: hoveredTreeID,
-    });
-  };
-
-  onInfoButtonClick = () => {
-    this.setState({
-      openDrawer: true,
-      //mapCenter: this.state.treeDict[hoveredTreeID].geometry.coordinates
-    });
-    var treeId = this.state.hoveredTreeID
-      ? this.state.hoveredTreeID
-      : this.state.clickedTreeID;
-    var name = this.state.treeArray[treeId].fields.libellefrancais;
-    var genre = this.state.treeArray[treeId].fields.genre;
-    var espece = this.state.treeArray[treeId].fields.espece;
-    var keyword = genre + "_" + espece;
-    this.wikiTreeData(keyword);
-    this.setState({ clickedTreeName: name });
-  };
-
-  onCloseButtonClick = () => {
-    this.setState({
-      hoveredTreeID: "",
-      clickedTreeID: "",
-      //mapCenter: this.state.treeDict[hoveredTreeID].geometry.coordinates
-    });
-  };
-
-  toggleDrawer = () => {
-    this.setState({
-      openDrawer: false,
-      thumbnailUrl: "",
-      wikiDesc: "",
-    });
-  };
 
   componentDidMount() {
     this.treeData();
-  }
-
-  treeData() {
-    remarkableParisData.apply(this);
-  }
-
-  wikiTreeData() {
-    wikiData.apply(this, arguments);
   }
 
   render() {
@@ -177,4 +109,4 @@ class TreeMap extends Component {
   }
 }
 
-export default TreeMap;
+export default RemarkableTreesMap;
