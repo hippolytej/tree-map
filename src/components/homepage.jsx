@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import "../App.css";
 import { RegularLink, FloatingLink } from "./linkbuttons";
+import MiddleDivider from "./divider";
 import AddressForm from "./addressForm";
+import LocationOn from "@material-ui/icons/LocationOn";
+import MapIcon from "@material-ui/icons/Map";
 
 class HomePage extends Component {
   constructor(props) {
@@ -28,15 +31,23 @@ class HomePage extends Component {
           <img src="/logo_canopee_v0.001.png" alt="logo" height={"100%"} />
         </header>
         <main>
-          <h3>Explorez le Paris des arbres remarquables</h3>
-          <FloatingLink text="Carte" variant="outlined" to="/explore" />
-          <h3>Faites conaissance avec les arbres qui vous entourent</h3>
+          <h3>A la recherche d'un bel arbre ?</h3>
           <FloatingLink
-            text="Autour de vous"
+            text="Carte des arbres remarquables"
             variant="outlined"
+            to="/explore"
+            logo={<MapIcon />}
+          />
+          <MiddleDivider />
+          <h3>Quels sont les arbres qui vous entourent ?</h3>
+          <FloatingLink
+            text="Utiliser ma position"
+            variant="outlined"
+            logo={<LocationOn />}
             to={{ pathname: "/around-me", state: this.state }}
           />
           <AddressForm
+            placeholder="Ou plutôt à cette adresse"
             onChange={this.handleAddressChange}
             onEnterDown={this.onEnterDown}
             value={this.state.address}

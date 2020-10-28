@@ -14,7 +14,7 @@ import { parisData } from "../utils/parisData";
 import * as mapUtils from "../utils/map_utils";
 
 const Map = ReactMapboxGl({
-  minZoom: 16,
+  minZoom: 14,
   maxZoom: 20,
   accessToken: token,
 });
@@ -37,7 +37,7 @@ class NearbyTreesMap extends Component {
       address: this.props.address ? this.props.address : "",
       latitude: 0,
       longitude: 0,
-      zoom: [19],
+      zoom: [17],
       openDrawer: false,
       wikiTreeData: "",
       thumbnailUrl: "",
@@ -117,6 +117,10 @@ class NearbyTreesMap extends Component {
     const zoom = this.state.zoom;
     const hoveredTreeID = this.state.hoveredTreeID;
     const clickedTreeID = this.state.clickedTreeID;
+    var bounds = [
+      [2.14402, 48.772687],
+      [2.529051, 48.969946],
+    ];
     return this.state.locationAvailable ? (
       <div>
         <Map
@@ -126,6 +130,7 @@ class NearbyTreesMap extends Component {
           containerStyle={{ width: "100vw", height: "100vh" }}
           flyToOptions={flyToOptions}
           zoom={zoom}
+          maxBounds={bounds}
         >
           <RegularLink text="Accueil" variant="outlined" to="/">
             Home

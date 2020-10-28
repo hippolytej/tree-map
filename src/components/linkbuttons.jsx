@@ -45,6 +45,7 @@ function FloatingLinkButton(props) {
         to={props.to}
         href={props.href}
       >
+        {props.logo}
         {props.text}
       </Fab>
     </div>

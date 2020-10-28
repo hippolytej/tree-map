@@ -18,15 +18,18 @@ h1 {
   padding: 0px;
 }
 
+hr {
+  width: 100px;
+}
+
 h3 {
   display: flex;
   justify-content: center;
   text-align: center;
-  margin-block-start: 35px;
 }
 
 main {
-  width: 70%;
+  width: 90%;
   height: 60%;
   overflow: auto;
   margin: auto;

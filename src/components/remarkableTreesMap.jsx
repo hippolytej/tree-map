@@ -56,6 +56,10 @@ class RemarkableTreesMap extends Component {
     const clickedTreeID = this.state.clickedTreeID;
     const mapCenter = this.state.mapCenter;
     const zoom = this.state.zoom;
+    var bounds = [
+      [2.14402, 48.772687],
+      [2.529051, 48.969946],
+    ];
     return (
       <div>
         <Map
@@ -65,6 +69,7 @@ class RemarkableTreesMap extends Component {
           containerStyle={{ width: "100vw", height: "100vh" }}
           flyToOptions={flyToOptions}
           zoom={zoom}
+          maxBounds={bounds}
         >
           <RegularLink text="Accueil" variant="outlined" to="/">
             Home
