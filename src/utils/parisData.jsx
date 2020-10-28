@@ -1,3 +1,49 @@
+import * as materialColors from "@material-ui/core/colors/";
+const { common, grey, blueGrey, ...colors } = materialColors;
+
+function shuffle(array) {
+  var tmp,
+    current,
+    top = array.length;
+
+  if (top)
+    while (--top) {
+      current = Math.floor(Math.random() * (top + 1));
+      tmp = array[current];
+      array[current] = array[top];
+      array[top] = tmp;
+    }
+
+  return array;
+}
+
+function getColors() {
+  var colorNames = Object.keys(colors);
+  var shuffledColorNames = shuffle(colorNames);
+  var allColors = [];
+  for (var intensity of [
+    500,
+    700,
+    300,
+    900,
+    "A400",
+    "A200",
+    "A700",
+    "A100",
+    600,
+    200,
+    100,
+    50,
+  ]) {
+    for (var colorName of shuffledColorNames) {
+      allColors.push(colors[colorName][intensity]);
+    }
+  }
+  return allColors;
+}
+
+const allColors = getColors();
+
 export async function remarkableParisData() {
   var ids = [];
   const response = await fetch(
@@ -32,6 +78,7 @@ export async function parisData(latitude, longitude, radius) {
   const responseJson = await response.json();
   var maxNbTrees = Math.min(responseJson.parameters.rows, responseJson.nhits);
   var treeNamesDict = {};
+  var uniqueLibelleCount = 0;
   for (var i = 0; i < maxNbTrees; i++) {
     ids.push(i);
     var libelle = responseJson.records[i].fields.libellefrancais;
@@ -40,8 +87,9 @@ export async function parisData(latitude, longitude, radius) {
     } else {
       treeNamesDict[libelle] = {
         ids: [i],
-        color: "#" + (((1 << 24) * Math.random()) | 0).toString(16),
+        color: allColors[uniqueLibelleCount],
       };
+      uniqueLibelleCount++;
     }
   }
 

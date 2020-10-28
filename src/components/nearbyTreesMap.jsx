@@ -4,7 +4,7 @@ import { token, style } from "../config.json";
 // Components
 import TreePopUp from "./treePopUp";
 import { RegularLink } from "./linkbuttons";
-import TemporaryDrawer from "./drawer";
+import TemporaryDrawer from "./wikiDrawer";
 import ReactMapboxGl from "react-mapbox-gl";
 import TreeLayer from "./treeLayer";
 import CircularIndeterminate from "./progress";
@@ -12,6 +12,7 @@ import CircularIndeterminate from "./progress";
 import { getCoordinates } from "../utils/geocode";
 import { parisData } from "../utils/parisData";
 import * as mapUtils from "../utils/map_utils";
+import LegendExpansionPanel from "./legendPanel";
 
 const Map = ReactMapboxGl({
   minZoom: 14,
@@ -19,7 +20,7 @@ const Map = ReactMapboxGl({
   accessToken: token,
 });
 const mapStyle = style;
-const radius = 100;
+const radius = 200;
 const flyToOptions = {
   speed: 0,
 };
@@ -132,30 +133,10 @@ class NearbyTreesMap extends Component {
           zoom={zoom}
           maxBounds={bounds}
         >
-          <RegularLink text="Accueil" variant="outlined" to="/">
-            Home
-          </RegularLink>
-          <div
-            style={{
-              position: "fixed",
-              top: 20,
-              right: 100,
-            }}
-          >
-            {this.state.nbTrees ? (
-              <ul style={{ listStyle: null }}>
-                {Object.keys(this.state.treeNamesDict).map((item, i) =>
-                  mapUtils.ColorDot(
-                    i,
-                    item,
-                    this.state.treeNamesDict[item]["color"]
-                  )
-                )}
-              </ul>
-            ) : (
-              "Pas d'arbres par ici :("
-            )}
-          </div>
+          <LegendExpansionPanel
+            nbTrees={this.state.nbTrees}
+            treeNamesDict={this.state.treeNamesDict}
+          />
           {Object.keys(this.state.treeNamesDict).map((item, i) => (
             <TreeLayer
               key={i}
@@ -188,11 +169,21 @@ class NearbyTreesMap extends Component {
               onInfoButtonClick={this.onInfoButtonClick}
             />
           )}
+          <div style={{ position: "absolute", top: "5px" }}>
+            <RegularLink
+              text="Accueil"
+              variant="outlined"
+              to="/"
+              syle={{ top: 300 }}
+            >
+              Home
+            </RegularLink>
+          </div>
         </Map>
         <TemporaryDrawer
+          content="wiki"
           wikiDesc={this.state.wikiDesc}
           thumbnailUrl={this.state.thumbnailUrl}
-          leftDrawer={this.state.leftDrawer}
           openDrawer={this.state.openDrawer}
           toggleDrawer={this.toggleDrawer}
         />

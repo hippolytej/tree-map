@@ -5,7 +5,7 @@ import ReactMapboxGl from "react-mapbox-gl";
 import TreeLayer from "./treeLayer";
 import TreePopUp from "./treePopUp";
 import { RegularLink } from "./linkbuttons";
-import TemporaryDrawer from "./drawer";
+import TemporaryDrawer from "./wikiDrawer";
 // Utils
 import { remarkableParisData } from "../utils/parisData";
 import * as mapUtils from "../utils/map_utils";
@@ -105,7 +105,6 @@ class RemarkableTreesMap extends Component {
           wikiDesc={this.state.wikiDesc}
           thumbnailUrl={this.state.thumbnailUrl}
           treeName={this.state.clickedTreeName}
-          leftDrawer={this.state.leftDrawer}
           openDrawer={this.state.openDrawer}
           toggleDrawer={this.toggleDrawer}
         />

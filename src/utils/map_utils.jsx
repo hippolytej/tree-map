@@ -1,25 +1,6 @@
-import React from "react";
 import { isMobile } from "react-device-detect";
 import { wikiData } from "../utils/wikiData";
 import { GeolocateControl } from "mapbox-gl";
-
-export function ColorDot(id, name, color) {
-  return (
-    <li key={id}>
-      <span
-        style={{
-          height: 16,
-          width: 16,
-          backgroundColor: color,
-          borderRadius: 50,
-          display: "inline-block",
-        }}
-      >
-        <span style={{ paddingLeft: 30 }}>{name}</span>
-      </span>
-    </li>
-  );
-}
 
 export function onTreeHover(hoveredTreeID, { map }) {
   map.getCanvas().style.cursor = "pointer";
