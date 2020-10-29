@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import "../App.css";
 import { token, style } from "../config.json";
 // Components
+import { Marker } from "react-mapbox-gl";
+import { GeoJSONLayer } from "react-mapbox-gl";
 import TreePopUp from "./treePopUp";
 import { RegularLink } from "./linkbuttons";
 import TemporaryDrawer from "./wikiDrawer";
@@ -13,6 +15,8 @@ import { getCoordinates } from "../utils/geocode";
 import { parisData } from "../utils/parisData";
 import * as mapUtils from "../utils/map_utils";
 import LegendExpansionPanel from "./legendPanel";
+import { FlipToBack } from "@material-ui/icons";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
 
 const Map = ReactMapboxGl({
   minZoom: 14,
@@ -20,7 +24,7 @@ const Map = ReactMapboxGl({
   accessToken: token,
 });
 const mapStyle = style;
-const radius = 200;
+const radius = 150;
 const flyToOptions = {
   speed: 0,
 };
@@ -38,7 +42,7 @@ class NearbyTreesMap extends Component {
       address: this.props.address ? this.props.address : "",
       latitude: 0,
       longitude: 0,
-      zoom: [17],
+      zoom: [16],
       openDrawer: false,
       wikiTreeData: "",
       thumbnailUrl: "",
@@ -133,6 +137,9 @@ class NearbyTreesMap extends Component {
           zoom={zoom}
           maxBounds={bounds}
         >
+          <Marker coordinates={mapCenter} anchor="center">
+            <LocationOnIcon color={"primary"} />
+          </Marker>
           <LegendExpansionPanel
             nbTrees={this.state.nbTrees}
             treeNamesDict={this.state.treeNamesDict}
@@ -179,6 +186,18 @@ class NearbyTreesMap extends Component {
               Home
             </RegularLink>
           </div>
+          <GeoJSONLayer
+            data={
+              mapUtils.createGeoJSONCircle(mapCenter, radius / 1000, 100000)[
+                "data"
+              ]
+            }
+            lineLayout={{ visibility: "visible" }}
+            linePaint={{
+              "line-color": "#3f51b5",
+              "line-width": 1,
+            }}
+          />
         </Map>
         <TemporaryDrawer
           content="wiki"

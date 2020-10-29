@@ -5,10 +5,11 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Typography from "@material-ui/core/Typography";
 
 function ColorDot(id, name, color) {
   return (
-    <tr style={{ verticalAlign: "middle", textAlign: "left" }}>
+    <tr key={id} style={{ verticalAlign: "middle", textAlign: "left" }}>
       <td>
         <span
           style={{
@@ -19,31 +20,45 @@ function ColorDot(id, name, color) {
             display: "inline-block",
             marginRight: 20,
             verticalAlign: "middle",
+            backdropFilter: "blur(5px)",
           }}
         ></span>
       </td>
-      <td>{name}</td>
+      <td>
+        <Typography>{name}</Typography>
+      </td>
     </tr>
   );
 }
 
 function legendContent(nbTrees, treeNamesDict) {
-  return (
-    <div>
-      {nbTrees ? (
-        <table
-          style={{
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        >
-          {Object.keys(treeNamesDict).map((item, i) =>
-            ColorDot(i, item, treeNamesDict[item]["color"])
-          )}
-        </table>
-      ) : (
-        "Pas d'arbres par ici :("
-      )}
+  return nbTrees ? (
+    <table
+      style={{
+        marginLeft: "auto",
+        marginRight: "auto",
+        background: "rgba(255,255,255,0.2)",
+        borderRadius: "6px",
+        // -moz-border-radius:6px;
+      }}
+    >
+      <tbody>
+        {Object.keys(treeNamesDict).map((item, i) =>
+          ColorDot(i, item, treeNamesDict[item]["color"])
+        )}
+      </tbody>
+    </table>
+  ) : (
+    <div
+      style={{
+        width: "70vw",
+        marginLeft: "auto",
+        marginRight: "auto",
+        background: "rgba(255,255,255,0.2)",
+        borderRadius: "6px",
+      }}
+    >
+      <Typography>C'est la hess morray y'a pas d'arbres ici</Typography>
     </div>
   );
 }
@@ -57,17 +72,19 @@ const styles = {
     border: 0,
     boxShadow: "none",
   },
+  sumExpanded: {
+    overflow: "auto",
+  },
   expansionPanelSummaryExpandIcon: {
     right: "auto",
   },
-  details: {
-    alignItems: "center",
-  },
-  pute: {
+  detailsRoot: {
+    padding: 0,
     width: "100%",
     alignItems: "center",
     display: "inline-block",
     textAlign: "center",
+    overflow: "auto",
   },
 };
 
@@ -78,14 +95,14 @@ function LegendExpansionPanel(props) {
       <ExpansionPanel defaultExpanded={true} className={classes.panel}>
         <ExpansionPanelSummary
           classes={{
+            root: classes.sumRoot,
+            expanded: classes.sumExpanded,
             expandIcon: classes.expansionPanelSummaryExpandIcon,
           }}
           expandIcon={<ExpandMoreIcon />}
         ></ExpansionPanelSummary>
-        <ExpansionPanelDetails className={classes.details}>
-          <div className={classes.pute}>
-            {legendContent(props.nbTrees, props.treeNamesDict)}
-          </div>
+        <ExpansionPanelDetails classes={{ root: classes.detailsRoot }}>
+          {legendContent(props.nbTrees, props.treeNamesDict)}
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </div>

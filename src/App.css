@@ -43,6 +43,10 @@ main {
   justify-content: center;
 }
 
+.MuiExpansionPanelDetails-root {
+  padding: 0;
+}
+
 footer {
   width: 100%;
   bottom: 0;
